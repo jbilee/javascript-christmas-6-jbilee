@@ -1,11 +1,12 @@
 import { Console } from '@woowacourse/mission-utils';
 import InputView from './InputView.js';
-import { RESTAURANT_MENU } from './constants.js';
+import { RESTAURANT_MENU, PROMOTION_DATES } from './constants.js';
 
 class App {
   async run() {
     const reservationDate = await this.getReservationDate();
     const order = await this.getOrder();
+    const baseTotal = this.getBaseTotal(order);
   }
 
   async getReservationDate() {
@@ -21,7 +22,7 @@ class App {
       }
     } while (!input);
 
-    return input;
+    return Number(input);
   }
 
   async getOrder() {
@@ -85,6 +86,18 @@ class App {
 
     if (itemSet.size === 1 && itemSet.has('drinks'))
       throw new Error('[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.');
+  }
+
+  getBaseTotal(order) {
+    const itemsOrdered = order.split(',').map((item) => item.split('-'));
+    let total = 0;
+
+    for (let i = 0; i < itemsOrdered.length; i += 1) {
+      total +=
+        RESTAURANT_MENU[itemsOrdered[i][0]].PRICE * Number(itemsOrdered[i][1]);
+    }
+
+    return total;
   }
 }
 
