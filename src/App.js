@@ -7,6 +7,7 @@ class App {
     const reservationDate = await this.getReservationDate();
     const order = await this.getOrder();
     const baseTotal = this.getBaseTotal(order);
+    const activePromotions = this.getActivePromotions(reservationDate);
   }
 
   async getReservationDate() {
@@ -99,6 +100,19 @@ class App {
 
     return total;
   }
+
+  getActivePromotions(date) {
+    const array = [];
+
+    for (let i = 0; i < PROMOTION_DATES.length; i += 1) {
+      if (PROMOTION_DATES[i].DATES.includes(date)) {
+        array.push(PROMOTION_DATES[i].TYPE);
+      }
+    }
+
+    return array;
+  }
+
 }
 
 export default App;

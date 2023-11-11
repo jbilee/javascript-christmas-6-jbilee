@@ -48,3 +48,22 @@ export const RESTAURANT_MENU = {
     PRICE: 25000,
   },
 };
+
+export const PROMOTION_DATES = [
+  {
+    TYPE: 'WEEKDAYS',
+    DATES: [
+      3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28,
+      31,
+    ],
+  },
+  { TYPE: 'WEEKENDS', DATES: [1, 2, 8, 9, 15, 16, 22, 23, 29, 30] },
+  {
+    TYPE: 'D_DAY_SALES',
+    DATES: [
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+      22, 23, 24, 25,
+    ],
+  },
+  { TYPE: 'SPECIAL_SALES', DATES: [3, 10, 17, 24, 25, 31] },
+];
