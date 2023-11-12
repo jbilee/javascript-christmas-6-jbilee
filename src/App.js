@@ -1,6 +1,8 @@
 import { Console } from '@woowacourse/mission-utils';
 import InputView from './InputView.js';
+import Validation from './Validation.js';
 import { RESTAURANT_MENU, PROMOTION_DATES } from './constants.js';
+import { countItems } from './utilities.js';
 
 class App {
   async run() {
@@ -20,7 +22,7 @@ class App {
     do {
       try {
         input = await InputView.readDate();
-        this.validateDate(input);
+        Validation.date(input);
       } catch (error) {
         Console.print(error.message);
         input = null;
@@ -44,17 +46,6 @@ class App {
     } while (!input);
 
     return input;
-  }
-
-  validateDate(inputString) {
-    const inputNumber = Number(inputString);
-    if (
-      inputNumber < 1 ||
-      inputNumber > 31 ||
-      inputString.includes('.') ||
-      Number.isNaN(inputNumber)
-    )
-      throw new Error('[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.');
   }
 
   validateOrder(inputString) {
@@ -117,14 +108,6 @@ class App {
     return array;
   }
 
-  countItems(array, item) {
-    let count = 0;
-    for (let i = 0; i < array.length; i += 1) {
-      if (array[i] === item) count += 1;
-    }
-    return count;
-  }
-
   getBaseDiscount(baseTotal, order, date, promotions) {
     if (baseTotal < 10000) return 0;
 
@@ -147,12 +130,12 @@ class App {
     promotions.forEach((promotion) => {
       switch(promotion) {
         case 'WEEKDAYS': {
-          const discount = this.calculateWeekdayDiscount(this.countItems(categories, 'desserts'));
+          const discount = this.calculateWeekdayDiscount(countItems(categories, 'desserts'));
           discountTotal += discount;
           break;
         }
         case 'WEEKENDS': {
-          const discount = this.calculateWeekendDiscount(this.countItems(categories, 'main'));
+          const discount = this.calculateWeekendDiscount(countItems(categories, 'main'));
           discountTotal += discount;
           break;
         }
