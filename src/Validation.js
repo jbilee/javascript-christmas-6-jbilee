@@ -1,5 +1,7 @@
+import { ORDER_LIMIT, RESTAURANT_MENU, ERROR_MESSAGES } from './constants.js';
+
 const Validation = {
-  date(inputString) {
+  checkDate(inputString) {
     const inputNumber = Number(inputString);
 
     if (
@@ -8,7 +10,28 @@ const Validation = {
       inputString.includes('.') ||
       Number.isNaN(inputNumber)
     )
-      throw new Error('[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.');
+      throw new Error(ERROR_MESSAGES.INVALID_DATE);
+  },
+
+  checkMenu(menuName) {
+    if (!RESTAURANT_MENU[menuName])
+      throw new Error(ERROR_MESSAGES.INVALID_ORDER);
+  },
+
+  checkItemCount(countString) {
+    const countNumber = Number(countString);
+
+    if (
+      Number.isNaN(countNumber) ||
+      countNumber < 1 ||
+      countString.includes('.')
+    )
+      throw new Error(ERROR_MESSAGES.INVALID_ORDER);
+  },
+
+  checkOrderLimit(orderQuantity) {
+    if (orderQuantity > ORDER_LIMIT)
+      throw new Error(ERROR_MESSAGES.INVALID_ORDER);
   },
 };
 

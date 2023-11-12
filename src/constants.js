@@ -1,3 +1,5 @@
+export const ORDER_LIMIT = 20;
+
 export const RESTAURANT_MENU = {
   양송이수프: {
     CATEGORY: 'appetizers',
@@ -67,3 +69,8 @@ export const PROMOTION_DATES = [
   },
   { TYPE: 'SPECIAL_SALES', DATES: [3, 10, 17, 24, 25, 31] },
 ];
+
+export const ERROR_MESSAGES = {
+  INVALID_DATE: '[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.',
+  INVALID_ORDER: '[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.',
+};

@@ -22,7 +22,7 @@ class App {
     do {
       try {
         input = await InputView.readDate();
-        Validation.date(input);
+        Validation.checkDate(input);
       } catch (error) {
         Console.print(error.message);
         input = null;
@@ -55,15 +55,8 @@ class App {
       const itemOrdered = input.split('-');
       const [menuName, itemCount] = itemOrdered;
 
-      if (
-        !RESTAURANT_MENU[menuName] ||
-        Number.isNaN(Number(itemCount)) ||
-        itemCount.includes('.') ||
-        Number(itemCount) < 1
-      )
-        throw new Error(
-          '[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.',
-        );
+      Validation.checkMenu(menuName);
+      Validation.checkItemCount(itemCount);
 
       order[menuName] = itemCount;
     });
@@ -72,8 +65,7 @@ class App {
       return acc + Number(num);
     }, 0);
 
-    if (totalItemCount > 20)
-      throw new Error('[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.');
+    Validation.checkOrderLimit(totalItemCount);
 
     const itemCategories = Object.keys(order).map(
       (item) => RESTAURANT_MENU[item].CATEGORY,
