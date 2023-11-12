@@ -8,6 +8,7 @@ class App {
     const order = await this.getOrder();
     const baseTotal = this.getBaseTotal(order);
     const activePromotions = this.getActivePromotions(reservationDate);
+    const discountTotal = this.getDiscountTotal(baseTotal, order, reservationDate, activePromotions);
   }
 
   async getReservationDate() {
@@ -113,6 +114,85 @@ class App {
     return array;
   }
 
+  countItems(array, item) {
+    let count = 0;
+    for (let i = 0; i < array.length; i += 1) {
+      if (array[i] === item) count += 1;
+    }
+    return count;
+  }
+
+  getDiscountTotal(baseTotal, order, date, promotions) {
+    if (baseTotal < 10000) return 0;
+
+    const itemsOrdered = order.split(',').map((item) => item.split('-'));
+    const menuNames = itemsOrdered.reduce((acc, cur) => {
+      for (let i = 0; i < cur[1]; i++) {
+        acc.push(cur[0]);
+      }
+      return acc;
+    },[]);
+
+    const categories = [];
+
+    menuNames.forEach((name) => {
+      categories.push(RESTAURANT_MENU[name].CATEGORY);
+    });
+
+    let discountTotal = 0;
+
+    promotions.forEach((promotion) => {
+      switch(promotion) {
+        case 'WEEKDAYS': {
+          const discount = this.calculateWeekdayDiscount(this.countItems(categories, 'desserts'));
+          discountTotal += discount;
+          break;
+        }
+        case 'WEEKENDS': {
+          const discount = this.calculateWeekendDiscount(this.countItems(categories, 'main'));
+          discountTotal += discount;
+          break;
+        }
+        case 'D_DAY_SALES': {
+          const discount = this.calculateDDayDiscount(date);
+          discountTotal += discount;
+          break;
+        }
+        case 'SPECIAL_SALES': {
+          const discount = this.calculateSpecialDiscount();
+          discountTotal += discount;
+          break;
+        }
+        default:
+          throw new Error('[ERROR]')
+      }
+    });
+
+    const additionalDiscount = this.calculateFreebieDiscount(baseTotal);
+
+    return discountTotal + additionalDiscount;
+  }
+
+  calculateWeekdayDiscount(itemCount) {
+    return 2023 * itemCount;
+  }
+
+  calculateWeekendDiscount(itemCount) {
+    return 2023 * itemCount;
+  }
+
+  calculateDDayDiscount(date) {
+    return 900 + 100 * date;
+  }
+
+  calculateSpecialDiscount() {
+    return 1000;
+  }
+
+  calculateFreebieDiscount(total) {
+    if (total >= 120000) return 25000;
+    return 0;
+  }
 }
 
 export default App;
