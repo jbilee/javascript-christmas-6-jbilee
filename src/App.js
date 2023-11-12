@@ -8,7 +8,10 @@ class App {
     const order = await this.getOrder();
     const baseTotal = this.getBaseTotal(order);
     const activePromotions = this.getActivePromotions(reservationDate);
-    const discountTotal = this.getDiscountTotal(baseTotal, order, reservationDate, activePromotions);
+    const baseDiscount = this.getBaseDiscount(baseTotal, order, reservationDate, activePromotions);
+    const additionalDiscount = this.calculateFreebieDiscount(baseTotal);
+    const discountTotal = baseDiscount + additionalDiscount;
+    const paymentTotal = baseTotal - baseDiscount;
   }
 
   async getReservationDate() {
@@ -122,7 +125,7 @@ class App {
     return count;
   }
 
-  getDiscountTotal(baseTotal, order, date, promotions) {
+  getBaseDiscount(baseTotal, order, date, promotions) {
     if (baseTotal < 10000) return 0;
 
     const itemsOrdered = order.split(',').map((item) => item.split('-'));
@@ -168,9 +171,7 @@ class App {
       }
     });
 
-    const additionalDiscount = this.calculateFreebieDiscount(baseTotal);
-
-    return discountTotal + additionalDiscount;
+    return discountTotal;
   }
 
   calculateWeekdayDiscount(itemCount) {
