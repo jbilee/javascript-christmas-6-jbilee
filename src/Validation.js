@@ -33,6 +33,16 @@ const Validation = {
     if (orderQuantity > ORDER_LIMIT)
       throw new Error(ERROR_MESSAGES.INVALID_ORDER);
   },
+
+  checkEligibility(order) {
+    const itemCategories = Object.keys(order).map(
+      (item) => RESTAURANT_MENU[item].CATEGORY,
+    );
+    const itemSet = new Set(itemCategories);
+
+    if (itemSet.size === 1 && itemSet.has('drinks'))
+      throw new Error(ERROR_MESSAGES.INVALID_ORDER);
+  },
 };
 
 export default Validation;
