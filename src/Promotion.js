@@ -1,10 +1,10 @@
-import { RESTAURANT_MENU, PROMOTION_DATES } from './constants.js';
-import { countItems } from './utilities.js';
+import { PROMOTION_DATES } from './constants.js';
+import { countItems, Calculator } from './utilities.js';
 
 class Promotion {
   constructor(date) {
     this.date = date;
-    this.activePromotions = this.getActivePromotions(this.date);
+    this.activePromotions = this.getActivePromotions(date);
   }
 
   getActivePromotions(date) {
@@ -19,78 +19,43 @@ class Promotion {
     return array;
   }
 
-  getBaseDiscount(baseTotal, order) {
-    if (baseTotal < 10000) return 0;
-
-    const menuNames = order.reduce((acc, cur) => {
-      for (let i = 0; i < cur[1]; i++) {
-        acc.push(cur[0]);
-      }
-      return acc;
-    }, []);
-
-    const categories = [];
-
-    menuNames.forEach((name) => {
-      categories.push(RESTAURANT_MENU[name].CATEGORY);
-    });
-
-    let discountTotal = 0;
+  getDiscounts(baseTotal, menuCategories) {
+    const discountTotal = {};
 
     this.activePromotions.forEach((promotion) => {
-      switch (promotion) {
-        case 'WEEKDAYS': {
-          const discount = this.calculateWeekdayDiscount(
-            countItems(categories, 'desserts'),
-          );
-          discountTotal += discount;
-          break;
-        }
-        case 'WEEKENDS': {
-          const discount = this.calculateWeekendDiscount(
-            countItems(categories, 'main'),
-          );
-          discountTotal += discount;
-          break;
-        }
-        case 'D_DAY_SALES': {
-          const discount = this.calculateDDayDiscount(this.date);
-          discountTotal += discount;
-          break;
-        }
-        case 'SPECIAL_SALES': {
-          const discount = this.calculateSpecialDiscount();
-          discountTotal += discount;
-          break;
-        }
-        default:
-          throw new Error('[ERROR]');
-      }
+      const dessertsCount = countItems(menuCategories, 'desserts');
+      const mainCount = countItems(menuCategories, 'main');
+
+      discountTotal[promotion] = this.calculateDiscounts(promotion, dessertsCount, mainCount);
     });
+    discountTotal.freebie = Calculator.freebieDiscount(baseTotal);
 
     return discountTotal;
   }
 
-  calculateWeekdayDiscount(itemCount) {
-    return 2023 * itemCount;
+  getDiscountSum(summary) {
+    let sum = 0;
+    for (let i = 0; i < this.activePromotions.length; i += 1) {
+      sum += summary[this.activePromotions[i]];
+    }
+
+    return sum;
   }
 
-  calculateWeekendDiscount(itemCount) {
-    return 2023 * itemCount;
-  }
-
-  calculateDDayDiscount(date) {
-    return 900 + 100 * date;
-  }
-
-  calculateSpecialDiscount() {
-    return 1000;
-  }
-
-  calculateFreebieDiscount(total) {
-    if (total >= 120000) return 25000;
-    return 0;
-  }
+  calculateDiscounts(promotion, dessertsCount, mainCount) {
+    switch (promotion) {
+      case 'weekdays':
+        return Calculator.weekdayDiscount(dessertsCount);
+      case 'weekends':
+        return Calculator.weekendDiscount(mainCount);
+      case 'dDaySales':
+        return Calculator.dDayDiscount(this.date);
+      case 'specialSales':
+        return Calculator.specialDiscount();
+      default:
+        return null;
+    }
+  }  
 }
 
 export default Promotion;

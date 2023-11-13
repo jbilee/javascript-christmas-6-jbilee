@@ -1,4 +1,6 @@
 export const ORDER_LIMIT = 20;
+export const MINIMUM_ORDER_FOR_DISCOUNTS = 10000;
+export const MINIMUM_ORDER_FOR_FREEBIE = 120000;
 
 export const RESTAURANT_MENU = {
   양송이수프: {
@@ -53,22 +55,29 @@ export const RESTAURANT_MENU = {
 
 export const PROMOTION_DATES = [
   {
-    TYPE: 'WEEKDAYS',
+    TYPE: 'weekdays',
     DATES: [
       3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 17, 18, 19, 20, 21, 24, 25, 26, 27, 28,
       31,
     ],
   },
-  { TYPE: 'WEEKENDS', DATES: [1, 2, 8, 9, 15, 16, 22, 23, 29, 30] },
+  { TYPE: 'weekends', DATES: [1, 2, 8, 9, 15, 16, 22, 23, 29, 30] },
   {
-    TYPE: 'D_DAY_SALES',
+    TYPE: 'dDaySales',
     DATES: [
       1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
       22, 23, 24, 25,
     ],
   },
-  { TYPE: 'SPECIAL_SALES', DATES: [3, 10, 17, 24, 25, 31] },
+  { TYPE: 'specialSales', DATES: [3, 10, 17, 24, 25, 31] },
 ];
+
+export const PROMOTION_DISCOUNTS = {
+  DAILY: 2023,
+  D_DAY: 900,
+  SPECIAL: 1000,
+  FREEBIE: 25000,
+};
 
 export const ERROR_MESSAGES = {
   INVALID_DATE: '[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.',
