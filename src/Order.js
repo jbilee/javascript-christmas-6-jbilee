@@ -1,34 +1,28 @@
 import Validation from './Validation.js';
+import { getNestedArrayFromString, getObjectFromString } from './utilities.js';
 
 class Order {
   constructor(date, order) {
+    this.#validateOrderFormat(order);
+    this.#validateEligibility(order);
     this.reservationDate = date;
-    this.itemsOrdered = this.getItemsOrdered(order);
-    this.orderObject = this.#validateOrderFormat(this.itemsOrdered);
-    this.#validateEligibility(this.orderObject);
+    this.itemsOrdered = getObjectFromString(order);
   }
 
-  #validateOrderFormat(itemsOrdered) {
-    const order = {};
+  #validateOrderFormat(input) {
+    const order = getNestedArrayFromString(input);
 
-    itemsOrdered.forEach((itemOrdered) => {
-      const [menuName, itemCount] = itemOrdered;
+    order.forEach((menuItem) => {
+      const [itemName, itemCount] = menuItem;
 
-      Validation.checkMenu(menuName);
+      Validation.checkMenu(itemName);
       Validation.checkItemCount(itemCount);
-
-      order[menuName] = itemCount;
     });
-
-    return order;
   }
 
-  getItemsOrdered(input) {
-    const itemsOrdered = input.split(',').map((item) => item.split('-'));
-    return itemsOrdered;
-  }
-
-  #validateEligibility(order) {
+  #validateEligibility(input) {
+    const order = getObjectFromString(input);
+  
     const totalItemCount = Object.values(order).reduce((acc, num) => {
       return acc + Number(num);
     }, 0);
