@@ -39,8 +39,6 @@ class Promotion {
   getDiscountSum(summary) {
     let sum = 0;
 
-    if (!summary) return sum;
-    
     for (let i = 0; i < this.#activePromotions.length; i += 1) {
       sum += summary[this.#activePromotions[i]];
     }

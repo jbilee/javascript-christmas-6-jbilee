@@ -77,11 +77,15 @@ class Order {
   }
 
   calculateBaseDiscount(discountSummary) {
+    if (!discountSummary) return 0;
+
     const baseDiscount = this.#promotions.getDiscountSum(discountSummary);
     return baseDiscount;
   }
 
   calculateTotalDiscount(discountSummary) {
+    if (!discountSummary) return 0;
+    
     const baseDiscount = this.#promotions.getDiscountSum(discountSummary);
     const additionalDiscount = discountSummary.freebie;
 
