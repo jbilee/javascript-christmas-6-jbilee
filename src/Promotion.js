@@ -2,9 +2,12 @@ import { PROMOTION_DATES } from './constants.js';
 import { countItems, Calculator } from './utilities.js';
 
 class Promotion {
+  #date;
+  #activePromotions;
+
   constructor(date) {
-    this.date = date;
-    this.activePromotions = this.getActivePromotions(date);
+    this.#date = date;
+    this.#activePromotions = this.getActivePromotions(date);
   }
 
   getActivePromotions(date) {
@@ -22,7 +25,7 @@ class Promotion {
   getDiscounts(baseTotal, menuCategories) {
     const discountTotal = {};
 
-    this.activePromotions.forEach((promotion) => {
+    this.#activePromotions.forEach((promotion) => {
       const dessertsCount = countItems(menuCategories, 'desserts');
       const mainCount = countItems(menuCategories, 'main');
 
@@ -35,8 +38,11 @@ class Promotion {
 
   getDiscountSum(summary) {
     let sum = 0;
-    for (let i = 0; i < this.activePromotions.length; i += 1) {
-      sum += summary[this.activePromotions[i]];
+
+    if (!summary) return sum;
+    
+    for (let i = 0; i < this.#activePromotions.length; i += 1) {
+      sum += summary[this.#activePromotions[i]];
     }
 
     return sum;
@@ -49,7 +55,7 @@ class Promotion {
       case 'weekends':
         return Calculator.weekendDiscount(mainCount);
       case 'dDaySales':
-        return Calculator.dDayDiscount(this.date);
+        return Calculator.dDayDiscount(this.#date);
       case 'specialSales':
         return Calculator.specialDiscount();
       default:

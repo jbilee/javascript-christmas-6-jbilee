@@ -1,14 +1,17 @@
 import Promotion from './Promotion.js';
 import Validation from './Validation.js';
 import { MINIMUM_ORDER_FOR_DISCOUNTS, RESTAURANT_MENU } from './constants.js';
-import { getNestedArrayFromString, getObjectFromNestedArray } from './utilities.js';
+import { getNestedArrayFromString, getObjectFromString } from './utilities.js';
 
 class Order {
+  #userOrder
+  #promotions
+
   constructor(date, order) {
     this.#validateOrderFormat(order);
-    this.menuArray = getNestedArrayFromString(order);
-    this.#validateEligibility();
-    this.promotions = new Promotion(date);
+    this.#validateEligibility(order);
+    this.#userOrder = order;
+    this.#promotions = new Promotion(date);
   }
 
   #validateOrderFormat(input) {
@@ -22,8 +25,8 @@ class Order {
     });
   }
 
-  #validateEligibility() {
-    const order = getObjectFromNestedArray(this.menuArray);
+  #validateEligibility(input) {
+    const order = getObjectFromString(input);
   
     const totalItemCount = Object.values(order).reduce((acc, num) => {
       return acc + Number(num);
@@ -33,8 +36,14 @@ class Order {
     Validation.checkEligibility(order);
   }
 
+  getMenuArray() {
+    const menuArray = getNestedArrayFromString(this.#userOrder);
+    return menuArray;
+  }
+
   getMenuCategories() {
-    const menuCategories = this.menuArray.reduce((acc, cur) => {
+    const menuArray = this.getMenuArray();
+    const menuCategories = menuArray.reduce((acc, cur) => {
       for (let i = 0; i < cur[1]; i++) {
         acc.push(RESTAURANT_MENU[cur[0]].CATEGORY);
       }
@@ -45,7 +54,7 @@ class Order {
   }
 
   calculateBaseTotal() {
-    const menuObject = getObjectFromNestedArray(this.menuArray);
+    const menuObject = getObjectFromString(this.#userOrder);
     const menuNames = Object.keys(menuObject);
     let total = 0;
 
@@ -62,13 +71,13 @@ class Order {
     if (baseTotal < MINIMUM_ORDER_FOR_DISCOUNTS) return null;
 
     const menuCategories = this.getMenuCategories();
-    const discountSummary = this.promotions.getDiscounts(baseTotal, menuCategories);
+    const discountSummary = this.#promotions.getDiscounts(baseTotal, menuCategories);
 
     return discountSummary;
   }
 
   calculateBaseDiscount(discountSummary) {
-    const baseDiscount = this.promotions.getDiscountSum(discountSummary);
+    const baseDiscount = this.#promotions.getDiscountSum(discountSummary);
     return baseDiscount;
   }
 }

@@ -1,18 +1,19 @@
 import { Console } from '@woowacourse/mission-utils';
 import InputView from './InputView.js';
+import OutputView from './OutputView.js';
 import Order from './Order.js';
 import Validation from './Validation.js';
 
 class App {
   async run() {
+    OutputView.printGreeting();
+
     const reservationDate = await this.getReservationDate();
     const order = await this.createOrder(reservationDate);
-    
-    const baseTotal = order.calculateBaseTotal();
-    const discountTotal = order.getDiscountSummary(baseTotal);
-    const baseDiscount = order.calculateBaseDiscount(discountTotal);
 
-    const paymentTotal = baseTotal - baseDiscount;
+    OutputView.printDescription(reservationDate);
+
+    this.runPlanner(order);
   }
 
   async getReservationDate() {
@@ -44,6 +45,21 @@ class App {
     } while (!newOrder);
 
     return newOrder;
+  }
+
+  runPlanner(order) {
+    const orderArray = order.getMenuArray();
+    const baseTotal = order.calculateBaseTotal();
+    const discountTotal = order.getDiscountSummary(baseTotal);
+    const baseDiscount = order.calculateBaseDiscount(discountTotal);
+    const paymentTotal = baseTotal - baseDiscount;
+    
+    OutputView.printMenu(orderArray);
+    OutputView.printBaseTotal(baseTotal);
+    OutputView.printFreebie(discountTotal);
+    OutputView.printDiscountSummary(discountTotal);
+    OutputView.printTotalDiscounts(baseDiscount);
+    OutputView.printPaymentTotal(paymentTotal);
   }
 }
 

@@ -8,7 +8,8 @@ export const countItems = (array, itemToCount) => {
   return count;
 };
 
-export const getObjectFromNestedArray = (array) => {
+export const getObjectFromString = (string) => {
+  const array = string.split(',').map((element) => element.split('-'));
   const object = {};
 
   array.forEach((element) => {
@@ -46,3 +47,14 @@ export const Calculator = {
     return 0;
   },
 };
+
+export const insertThousandsComma = (string) => {
+  const characters = string.split('');
+  if (characters.length < 4) return string;
+  
+  for (let i = -3; Math.abs(i) < characters.length; i -= 4) {
+    characters.splice(i, 0, ',');
+  }
+
+  return characters.join('');
+}
