@@ -1,5 +1,5 @@
 import { Console } from '@woowacourse/mission-utils';
-import { INTERFACE_TEXT, PROMOTION_NAMES } from './constants.js';
+import { INTERFACE_TEXT, PROMOTION_NAMES, BADGE_TIERS } from './constants.js';
 import { insertThousandsComma } from './utilities.js';
 
 const OutputView = {
@@ -70,6 +70,18 @@ const OutputView = {
 
     const text = insertThousandsComma(paymentTotal.toString());
     Console.print(`${text}원`);
+  },
+
+  printBadge(discounted) {
+    Console.print('');
+    Console.print(INTERFACE_TEXT.BADGE_HEADER);
+
+    for (let i = 0; i < BADGE_TIERS.length; i += 1) {
+      if (discounted >= BADGE_TIERS[i].REQUIREMENT)
+        return Console.print(BADGE_TIERS[i].NAME);
+    }
+
+    return Console.print(INTERFACE_TEXT.NOT_APPLICABLE);
   },
 };
 

@@ -78,7 +78,7 @@ export const PROMOTION_NAMES = {
   dDaySales: '크리스마스 디데이 할인',
   specialSales: '특별 할인',
   freebie: '증정 이벤트',
-}
+};
 
 export const PROMOTION_DISCOUNTS = {
   DAILY: 2023,
@@ -94,8 +94,10 @@ export const ERROR_MESSAGES = {
 
 export const INTERFACE_TEXT = {
   GREETING: '안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.',
-  DATE_PROMPT: '12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)\n',
-  MENU_PROMPT: '주문하실 메뉴를 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)\n',
+  DATE_PROMPT:
+    '12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)\n',
+  MENU_PROMPT:
+    '주문하실 메뉴를 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)\n',
   SUMMARY: '에 우테코 식당에서 받을 이벤트 혜택 미리 보기!',
   MENU_HEADER: '<주문 메뉴>',
   BASE_TOTAL_HEADER: '<할인 전 총주문 금액>',
@@ -106,5 +108,11 @@ export const INTERFACE_TEXT = {
   BADGE_HEADER: '<12월 이벤트 배지>',
   FREEBIE: '샴페인 1개',
   NOT_APPLICABLE: '없음',
-  ZERO_DISCOUNTS: '0원'
+  ZERO_DISCOUNTS: '0원',
 };
+
+export const BADGE_TIERS = [
+  { REQUIREMENT: 20000, NAME: '산타' },
+  { REQUIREMENT: 10000, NAME: '트리' },
+  { REQUIREMENT: 5000, NAME: '별' },
+];
