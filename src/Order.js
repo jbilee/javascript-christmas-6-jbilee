@@ -1,6 +1,6 @@
 import Promotion from './Promotion.js';
 import Validation from './Validation.js';
-import { MINIMUM_ORDER_FOR_DISCOUNTS, RESTAURANT_MENU } from './constants.js';
+import { MINIMUM_ORDER_FOR_DISCOUNTS, RESTAURANT_MENU, PROMOTION_DISCOUNTS } from './constants.js';
 import { getNestedArrayFromString, getObjectFromString } from './utilities.js';
 
 class Order {
@@ -79,6 +79,13 @@ class Order {
   calculateBaseDiscount(discountSummary) {
     const baseDiscount = this.#promotions.getDiscountSum(discountSummary);
     return baseDiscount;
+  }
+
+  calculateTotalDiscount(discountSummary) {
+    const baseDiscount = this.#promotions.getDiscountSum(discountSummary);
+    const additionalDiscount = discountSummary.freebie;
+
+    return baseDiscount + additionalDiscount;
   }
 }
 

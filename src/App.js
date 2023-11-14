@@ -52,13 +52,14 @@ class App {
     const baseTotal = order.calculateBaseTotal();
     const discountTotal = order.getDiscountSummary(baseTotal);
     const baseDiscount = order.calculateBaseDiscount(discountTotal);
+    const totalDiscount = order.calculateTotalDiscount(discountTotal);
     const paymentTotal = baseTotal - baseDiscount;
     
     OutputView.printMenu(orderArray);
     OutputView.printBaseTotal(baseTotal);
     OutputView.printFreebie(discountTotal);
     OutputView.printDiscountSummary(discountTotal);
-    OutputView.printTotalDiscounts(baseDiscount);
+    OutputView.printTotalDiscounts(totalDiscount);
     OutputView.printPaymentTotal(paymentTotal);
   }
 }
