@@ -23,9 +23,9 @@ describe('Promotion 클래스 테스트', () => {
   test('평일 혜택 금액 계산 기능 테스트', () => {
     const TEST_DATES = [4, 5, 6];
     const TEST_CATEGORIES = [
-      ['appetizers', 'desserts', 'drinks'],
-      ['main', 'desserts', 'desserts'],
-      ['appetizers', 'main', 'drinks'],
+      ['appetizer', 'dessert', 'drink'],
+      ['main', 'dessert', 'dessert'],
+      ['appetizer', 'main', 'drink'],
     ];
     const PROMOTION_TYPE = 'weekdays';
     const expected = [2023, 4046, 0];
@@ -41,9 +41,9 @@ describe('Promotion 클래스 테스트', () => {
   test('주말 혜택 금액 계산 기능 테스트', () => {
     const TEST_DATES = [1, 2, 8];
     const TEST_CATEGORIES = [
-      ['appetizers', 'main', 'drinks'],
-      ['main', 'main', 'desserts'],
-      ['appetizers', 'desserts', 'drinks'],
+      ['appetizer', 'main', 'drink'],
+      ['main', 'main', 'dessert'],
+      ['appetizer', 'dessert', 'drink'],
     ];
     const PROMOTION_TYPE = 'weekends';
     const expected = [2023, 4046, 0];
@@ -59,9 +59,9 @@ describe('Promotion 클래스 테스트', () => {
   test('디데이 혜택 금액 계산 기능 테스트', () => {
     const TEST_DATES = [1, 10, 25];
     const TEST_CATEGORIES = [
-      ['appetizers', 'main', 'drinks'],
-      ['main', 'main', 'desserts'],
-      ['appetizers', 'desserts', 'drinks'],
+      ['appetizer', 'main', 'drink'],
+      ['main', 'main', 'dessert'],
+      ['appetizer', 'dessert', 'drink'],
     ];
     const PROMOTION_TYPE = 'dDaySales';
     const expected = [1000, 1900, 3400];
@@ -76,7 +76,7 @@ describe('Promotion 클래스 테스트', () => {
 
   test('입력한 주문의 모든 혜택 금액 추출 기능 테스트', () => {
     const TEST_DATES = [1, 3, 5, 26, 29, 31];
-    const TEST_CATEGORIES = ['main', 'desserts', 'desserts'];
+    const TEST_CATEGORIES = ['main', 'dessert', 'dessert'];
     const TEST_ORDER_TOTAL = 10000;
     const expected = [
       { weekends: 2023, dDaySales: 1000, freebie: 0 },
