@@ -4,15 +4,15 @@ export const MINIMUM_ORDER_FOR_FREEBIE = 120000;
 
 export const RESTAURANT_MENU = {
   양송이수프: {
-    CATEGORY: 'appetizers',
+    CATEGORY: 'appetizer',
     PRICE: 6000,
   },
   타파스: {
-    CATEGORY: 'appetizers',
+    CATEGORY: 'appetizer',
     PRICE: 5500,
   },
   시저샐러드: {
-    CATEGORY: 'appetizers',
+    CATEGORY: 'appetizer',
     PRICE: 8000,
   },
   티본스테이크: {
@@ -32,23 +32,23 @@ export const RESTAURANT_MENU = {
     PRICE: 25000,
   },
   초코케이크: {
-    CATEGORY: 'desserts',
+    CATEGORY: 'dessert',
     PRICE: 15000,
   },
   아이스크림: {
-    CATEGORY: 'desserts',
+    CATEGORY: 'dessert',
     PRICE: 5000,
   },
   제로콜라: {
-    CATEGORY: 'drinks',
+    CATEGORY: 'drink',
     PRICE: 3000,
   },
   레드와인: {
-    CATEGORY: 'drinks',
+    CATEGORY: 'drink',
     PRICE: 60000,
   },
   샴페인: {
-    CATEGORY: 'drinks',
+    CATEGORY: 'drink',
     PRICE: 25000,
   },
 };

@@ -3,17 +3,19 @@ import InputView from './InputView.js';
 import OutputView from './OutputView.js';
 import Order from './Order.js';
 import Validation from './Validation.js';
+import Planner from './Planner.js';
 
 class App {
   async run() {
     OutputView.printGreeting();
 
     const reservationDate = await this.getReservationDate();
-    const order = await this.createOrder(reservationDate);
+    const order = await this.createOrder();
+    const planner = new Planner(reservationDate, order);
 
     OutputView.printDescription(reservationDate);
 
-    this.runPlanner(order);
+    this.runPlanner(order, planner);
   }
 
   async getReservationDate() {
@@ -32,13 +34,13 @@ class App {
     return Number(input);
   }
 
-  async createOrder(date) {
+  async createOrder() {
     let newOrder;
 
     do {
       try {
         const input = await InputView.readMenu();
-        newOrder = new Order(date, input);
+        newOrder = new Order(input);
       } catch (error) {
         Console.print(error.message);
       }
@@ -47,12 +49,12 @@ class App {
     return newOrder;
   }
 
-  runPlanner(order) {
+  runPlanner(order, planner) {
     const orderArray = order.getMenuArray();
-    const baseTotal = order.calculateBaseTotal();
-    const discountTotal = order.getDiscountSummary(baseTotal);
-    const baseDiscount = order.calculateBaseDiscount(discountTotal);
-    const totalDiscount = order.calculateTotalDiscount(discountTotal);
+    const baseTotal = planner.calculateBaseTotal();
+    const discountTotal = planner.getDiscountSummary();
+    const baseDiscount = planner.calculateBaseDiscount();
+    const totalDiscount = planner.calculateTotalDiscount();
     const paymentTotal = baseTotal - baseDiscount;
     OutputView.printMenu(orderArray);
     OutputView.printBaseTotal(baseTotal);

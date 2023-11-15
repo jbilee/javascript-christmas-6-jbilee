@@ -13,7 +13,7 @@ const Validation = {
       throw new Error(ERROR_MESSAGES.INVALID_DATE);
   },
 
-  checkMenu(menuName) {
+  checkMenuName(menuName) {
     if (!RESTAURANT_MENU[menuName])
       throw new Error(ERROR_MESSAGES.INVALID_ORDER);
   },
@@ -29,18 +29,18 @@ const Validation = {
       throw new Error(ERROR_MESSAGES.INVALID_ORDER);
   },
 
-  checkOrderLimit(orderQuantity) {
+  checkItemLimit(orderQuantity) {
     if (orderQuantity > ORDER_LIMIT)
       throw new Error(ERROR_MESSAGES.INVALID_ORDER);
   },
 
-  checkEligibility(order) {
+  checkDrinksOnlyOrder(order) {
     const itemCategories = Object.keys(order).map(
       (item) => RESTAURANT_MENU[item].CATEGORY,
     );
     const itemSet = new Set(itemCategories);
 
-    if (itemSet.size === 1 && itemSet.has('drinks'))
+    if (itemSet.size === 1 && itemSet.has('drink'))
       throw new Error(ERROR_MESSAGES.INVALID_ORDER);
   },
 };

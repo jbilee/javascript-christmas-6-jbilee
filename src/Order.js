@@ -1,17 +1,14 @@
-import Promotion from './Promotion.js';
 import Validation from './Validation.js';
-import { MINIMUM_ORDER_FOR_DISCOUNTS, RESTAURANT_MENU, PROMOTION_DISCOUNTS } from './constants.js';
+import { RESTAURANT_MENU } from './constants.js';
 import { getNestedArrayFromString, getObjectFromString } from './utilities.js';
 
 class Order {
-  #userOrder
-  #promotions
+  #userOrder;
 
-  constructor(date, order) {
+  constructor(order) {
     this.#validateOrderFormat(order);
     this.#validateEligibility(order);
     this.#userOrder = order;
-    this.#promotions = new Promotion(date);
   }
 
   #validateOrderFormat(input) {
@@ -20,76 +17,46 @@ class Order {
     order.forEach((menuItem) => {
       const [itemName, itemCount] = menuItem;
 
-      Validation.checkMenu(itemName);
+      Validation.checkMenuName(itemName);
       Validation.checkItemCount(itemCount);
     });
   }
 
   #validateEligibility(input) {
     const order = getObjectFromString(input);
-  
-    const totalItemCount = Object.values(order).reduce((acc, num) => {
+    const menuItems = Object.values(order)
+
+    const totalItemCount = menuItems.reduce((acc, num) => {
       return acc + Number(num);
     }, 0);
 
-    Validation.checkOrderLimit(totalItemCount);
-    Validation.checkEligibility(order);
+    Validation.checkItemLimit(totalItemCount);
+    Validation.checkDrinksOnlyOrder(order);
   }
 
   getMenuArray() {
-    const menuArray = getNestedArrayFromString(this.#userOrder);
+    const array = getNestedArrayFromString(this.#userOrder);
+
+    const menuArray = array.map((item) => {
+      const [menuName, itemCount] = item;
+      return [menuName, Number(itemCount)];
+    });
+
     return menuArray;
   }
 
   getMenuCategories() {
     const menuArray = this.getMenuArray();
-    const menuCategories = menuArray.reduce((acc, cur) => {
-      for (let i = 0; i < cur[1]; i++) {
-        acc.push(RESTAURANT_MENU[cur[0]].CATEGORY);
+
+    const menuCategories = menuArray.reduce((list, item) => {
+      const [menuName, itemCount] = item;
+      for (let i = 0; i < itemCount; i+= 1) {
+        list.push(RESTAURANT_MENU[menuName].CATEGORY);
       }
-      return acc;
+      return list;
     }, []);
 
     return menuCategories;
-  }
-
-  calculateBaseTotal() {
-    const menuObject = getObjectFromString(this.#userOrder);
-    const menuNames = Object.keys(menuObject);
-    let total = 0;
-
-    for (let i = 0; i < menuNames.length; i += 1) {
-      const price = RESTAURANT_MENU[menuNames[i]].PRICE;
-      const quantity = Number(menuObject[menuNames[i]]);
-      total += price * quantity;
-    }
-
-    return total;
-  }
-
-  getDiscountSummary(baseTotal) {
-    if (baseTotal < MINIMUM_ORDER_FOR_DISCOUNTS) return null;
-
-    const menuCategories = this.getMenuCategories();
-    const discountSummary = this.#promotions.getDiscounts(baseTotal, menuCategories);
-
-    return discountSummary;
-  }
-
-  calculateBaseDiscount(discountSummary) {
-    if (!discountSummary) return 0;
-
-    const baseDiscount = this.#promotions.getDiscountSum(discountSummary);
-    return baseDiscount;
-  }
-
-  calculateTotalDiscount(discountSummary) {
-    if (!discountSummary) return 0;
-    
-    const baseDiscount = this.#promotions.getDiscountSum(discountSummary);
-    const additionalDiscount = discountSummary.freebie;
-
-    return baseDiscount + additionalDiscount;
   }
 }
 

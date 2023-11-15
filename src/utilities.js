@@ -27,7 +27,7 @@ export const getNestedArrayFromString = (string) => {
 
 export const Calculator = {
   weekdayDiscount(menuCategories) {
-    const itemCount = countItems(menuCategories, 'desserts');
+    const itemCount = countItems(menuCategories, 'dessert');
     return PROMOTION_DISCOUNTS.DAILY * itemCount;
   },
 
