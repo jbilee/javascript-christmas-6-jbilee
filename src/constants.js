@@ -82,7 +82,8 @@ export const PROMOTION_NAMES = {
 
 export const PROMOTION_DISCOUNTS = {
   DAILY: 2023,
-  D_DAY: 900,
+  D_DAY_BASE: 900,
+  D_DAY_BONUS: 100,
   SPECIAL: 1000,
   FREEBIE: 25000,
 };

@@ -26,16 +26,18 @@ export const getNestedArrayFromString = (string) => {
 };
 
 export const Calculator = {
-  weekdayDiscount(itemCount) {
+  weekdayDiscount(menuCategories) {
+    const itemCount = countItems(menuCategories, 'desserts');
     return PROMOTION_DISCOUNTS.DAILY * itemCount;
   },
 
-  weekendDiscount(itemCount) {
+  weekendDiscount(menuCategories) {
+    const itemCount = countItems(menuCategories, 'main');
     return PROMOTION_DISCOUNTS.DAILY * itemCount;
   },
 
   dDayDiscount(date) {
-    return PROMOTION_DISCOUNTS.D_DAY + 100 * date;
+    return PROMOTION_DISCOUNTS.D_DAY_BASE + PROMOTION_DISCOUNTS.D_DAY_BONUS * date;
   },
 
   specialDiscount() {

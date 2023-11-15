@@ -26,10 +26,7 @@ class Promotion {
     const discountTotal = {};
 
     this.#activePromotions.forEach((promotion) => {
-      const dessertsCount = countItems(menuCategories, 'desserts');
-      const mainCount = countItems(menuCategories, 'main');
-
-      discountTotal[promotion] = this.calculateDiscounts(promotion, dessertsCount, mainCount);
+      discountTotal[promotion] = this.calculateDiscounts(promotion, menuCategories);
     });
     discountTotal.freebie = Calculator.freebieDiscount(baseTotal);
 
@@ -46,12 +43,12 @@ class Promotion {
     return sum;
   }
 
-  calculateDiscounts(promotion, dessertsCount, mainCount) {
+  calculateDiscounts(promotion, menuCategories) {
     switch (promotion) {
       case 'weekdays':
-        return Calculator.weekdayDiscount(dessertsCount);
+        return Calculator.weekdayDiscount(menuCategories);
       case 'weekends':
-        return Calculator.weekendDiscount(mainCount);
+        return Calculator.weekendDiscount(menuCategories);
       case 'dDaySales':
         return Calculator.dDayDiscount(this.#date);
       case 'specialSales':
