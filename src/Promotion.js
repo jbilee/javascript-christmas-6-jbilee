@@ -1,5 +1,5 @@
 import { PROMOTION_DATES } from './constants.js';
-import { countItems, Calculator } from './utilities.js';
+import { Calculator } from './utilities.js';
 
 class Promotion {
   #date;
@@ -26,7 +26,10 @@ class Promotion {
     const discountTotal = {};
 
     this.#activePromotions.forEach((promotion) => {
-      discountTotal[promotion] = this.calculateDiscounts(promotion, menuCategories);
+      discountTotal[promotion] = this.calculateDiscounts(
+        promotion,
+        menuCategories,
+      );
     });
     discountTotal.freebie = Calculator.freebieDiscount(baseTotal);
 
@@ -56,7 +59,7 @@ class Promotion {
       default:
         return null;
     }
-  }  
+  }
 }
 
 export default Promotion;

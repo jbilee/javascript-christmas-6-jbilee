@@ -1,5 +1,5 @@
 import Promotion from './Promotion.js';
-import { MINIMUM_ORDER_FOR_DISCOUNTS, RESTAURANT_MENU, PROMOTION_DISCOUNTS } from './constants.js';
+import { MINIMUM_ORDER_FOR_DISCOUNTS, RESTAURANT_MENU } from './constants.js';
 
 class Planner {
   #userOrder;
@@ -16,10 +16,10 @@ class Planner {
     let total = 0;
 
     menuArray.forEach((menuItem) => {
-        const [menuName, itemCount] = menuItem;
-        const price = RESTAURANT_MENU[menuName].PRICE;
-        total += price * itemCount;
-    })
+      const [menuName, itemCount] = menuItem;
+      const price = RESTAURANT_MENU[menuName].PRICE;
+      total += price * itemCount;
+    });
 
     return total;
   }
@@ -29,7 +29,10 @@ class Planner {
     if (baseTotal < MINIMUM_ORDER_FOR_DISCOUNTS) return null;
 
     const menuCategories = this.#userOrder.getMenuCategories();
-    const discountSummary = this.#promotions.getDiscounts(baseTotal, menuCategories);
+    const discountSummary = this.#promotions.getDiscounts(
+      baseTotal,
+      menuCategories,
+    );
 
     return discountSummary;
   }
@@ -45,7 +48,7 @@ class Planner {
   calculateTotalDiscount() {
     const discountSummary = this.getDiscountSummary();
     if (!discountSummary) return 0;
-    
+
     const baseDiscount = this.#promotions.getDiscountSum(discountSummary);
     const additionalDiscount = discountSummary.freebie;
 

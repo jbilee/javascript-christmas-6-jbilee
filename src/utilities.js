@@ -37,7 +37,9 @@ export const Calculator = {
   },
 
   dDayDiscount(date) {
-    return PROMOTION_DISCOUNTS.D_DAY_BASE + PROMOTION_DISCOUNTS.D_DAY_BONUS * date;
+    return (
+      PROMOTION_DISCOUNTS.D_DAY_BASE + PROMOTION_DISCOUNTS.D_DAY_BONUS * date
+    );
   },
 
   specialDiscount() {
@@ -52,11 +54,12 @@ export const Calculator = {
 
 export const insertThousandsComma = (string) => {
   const characters = string.split('');
+
   if (characters.length < 4) return string;
-  
+
   for (let i = -3; Math.abs(i) < characters.length; i -= 4) {
     characters.splice(i, 0, ',');
   }
 
   return characters.join('');
-}
+};

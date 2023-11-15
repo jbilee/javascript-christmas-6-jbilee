@@ -24,7 +24,7 @@ class Order {
 
   #validateEligibility(input) {
     const order = getObjectFromString(input);
-    const menuItems = Object.values(order)
+    const menuItems = Object.values(order);
 
     const totalItemCount = menuItems.reduce((acc, num) => {
       return acc + Number(num);
@@ -50,7 +50,7 @@ class Order {
 
     const menuCategories = menuArray.reduce((list, item) => {
       const [menuName, itemCount] = item;
-      for (let i = 0; i < itemCount; i+= 1) {
+      for (let i = 0; i < itemCount; i += 1) {
         list.push(RESTAURANT_MENU[menuName].CATEGORY);
       }
       return list;

@@ -25,18 +25,18 @@ describe('Planner 클래스 테스트', () => {
   });
 
   test('총혜택 계산 기능 테스트', () => {
-    const TEST_DATES = [1,25, 31];
+    const TEST_DATES = [1, 25, 31];
     const TEST_ORDERS = [
-        '시저샐러드-1,크리스마스파스타-1',
-        '바비큐립-3,레드와인-2',
-        '티본스테이크-1,초코케이크-3,샴페인-1',
-    ]
+      '시저샐러드-1,크리스마스파스타-1',
+      '바비큐립-3,레드와인-2',
+      '티본스테이크-1,초코케이크-3,샴페인-1',
+    ];
     const expected = [3023, 29400, 32069];
 
     for (let i = 0; i < TEST_DATES.length; i += 1) {
-        const order = new Order(TEST_ORDERS[i])
-        const planner = new Planner(TEST_DATES[i], order);
-        expect(planner.calculateTotalDiscount()).toBe(expected[i]);
+      const order = new Order(TEST_ORDERS[i]);
+      const planner = new Planner(TEST_DATES[i], order);
+      expect(planner.calculateTotalDiscount()).toBe(expected[i]);
     }
   });
 });
