@@ -1,4 +1,3 @@
-import { MissionUtils } from '@woowacourse/mission-utils';
 import Order from '../src/Order.js';
 
 describe('Order 클래스 테스트', () => {
