@@ -6,6 +6,10 @@ const InputView = {
     const input = await Console.readLineAsync(PROMPTS.reservationDate);
     return input;
   },
+  async readMenuOrder() {
+    const input = await Console.readLineAsync(PROMPTS.menuOrder);
+    return input;
+  },
 };
 
 export default InputView;
