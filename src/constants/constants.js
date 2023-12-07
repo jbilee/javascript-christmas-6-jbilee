@@ -8,7 +8,7 @@ export const BASE_DISCOUNT = 0;
 
 export const REGEX = {
   date: /^([1-9]|[12]\d|3[01])$/,
-  menuOrder: /^.*-\d{1,2}$/g,
+  menuOrder: /^.*-\d{1,2}$/,
 };
 
 export const RESTAURANT_MENU = {
@@ -64,37 +64,47 @@ export const RESTAURANT_MENU = {
 
 export const PROMOTIONS = {
   weekdays: {
+    title: '평일 할인',
     discounts: 2023,
     item: 'dessert',
-    days: ['Sunday', 'Monday', 'Tuesday',' Wednesday', 'Thursday'],
+    days: ['Sunday', 'Monday', 'Tuesday', ' Wednesday', 'Thursday'],
   },
   weekends: {
+    title: '주말 할인',
     discounts: 2023,
     item: 'main',
     days: ['Friday', 'Saturday'],
   },
   dDay: {
+    title: '크리스마스 디데이 할인',
     discounts: {
       base: 900,
       bonus: 100,
     },
   },
   specialDay: {
+    title: '특별 할인',
     discounts: 1000,
     days: ['Sunday'],
   },
   freebie: {
+    title: '증정 이벤트',
     discounts: 25000,
     requirement: 120000,
   },
 };
 
-export const DAY_STRINGS = {
-  0: 'Sunday',
-  1: 'Monday',
-  2: 'Tuesday',
-  3: 'Wednesday',
-  4: 'Thursday',
-  5: 'Friday',
-  6: 'Saturday',
+export const BADGE_TIERS = {
+  star: {
+    name: '별',
+    requirement: 5000,
+  },
+  tree: {
+    name: '트리',
+    requirement: 10000,
+  },
+  santa: {
+    name: '산타',
+    requirement: 20000,
+  },
 }

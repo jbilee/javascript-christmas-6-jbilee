@@ -4,16 +4,16 @@ import {
   CHRISTMAS_DATE,
   BASE_DISCOUNT,
   PROMOTIONS,
-  DAY_STRINGS,
   RESTAURANT_MENU,
 } from '../constants/constants.js';
+import { DAY_STRINGS } from '../constants/strings.js';
 
 class Promotions {
   #date;
   #day;
 
   constructor(reservationDate) {
-    this.#date = Number(reservationDate);
+    this.#date = reservationDate;
     this.#day = new Date(CURRENT_YEAR, CURRENT_MONTH, reservationDate).getDay();
     console.log('Day of week: ' + this.#day + ` ${DAY_STRINGS[this.#day]}`);
   }
@@ -23,8 +23,8 @@ class Promotions {
       return BASE_DISCOUNT;
     }
     const numberOfDesserts = menuOrder.reduce((acc, [item, count]) => {
-      if (RESTAURANT_MENU[item].category === 'dessert') {
-        return acc += Number(count);
+      if (RESTAURANT_MENU[item].category === PROMOTIONS.weekdays.item) {
+        return acc + Number(count);
       }
       return acc;
     }, 0);
@@ -37,9 +37,10 @@ class Promotions {
       return BASE_DISCOUNT;
     }
     const numberOfMains = menuOrder.reduce((acc, [item, count]) => {
-      if (RESTAURANT_MENU[item].category === 'main') {
-        acc += Number(count);
+      if (RESTAURANT_MENU[item].category === PROMOTIONS.weekends.item) {
+        return acc + Number(count);
       }
+      return acc;
     }, 0);
 
     return numberOfMains * PROMOTIONS.weekends.discounts;
@@ -70,7 +71,7 @@ class Promotions {
     return PROMOTIONS.freebie.discounts;
   }
 
-  getTotalDiscounts(menuOrder) {
+  getDiscountSummary(menuOrder) {
     let discountSummary = {};
 
     discountSummary.weekdays = this.getWeekdayDiscounts(menuOrder);
@@ -80,20 +81,6 @@ class Promotions {
     discountSummary.freebie = this.getFreebieDiscounts(menuOrder);
 
     return discountSummary;
-  }
-
-  getApplicablePromotions() {
-    const day = new Date().getDay(CURRENT_YEAR, CURRENT_MONTH, this.#date);
-    const promotionNames = Object.keys(PROMOTIONS);
-    const promotions = [];
-
-    promotionNames.forEach((promotion) => {
-      if (
-        day <= PROMOTIONS[promotion].endDate &&
-        PROMOTIONS[promotion]?.days.includes(DAY_STRINGS[day])
-      ) {
-      }
-    });
   }
 }
 

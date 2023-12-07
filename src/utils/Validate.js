@@ -1,6 +1,6 @@
 import { ORDER_LIMIT, REGEX, RESTAURANT_MENU } from '../constants/constants.js';
 import { ERRORS } from '../constants/strings.js';
-import getNestedArrayFromString from './utilities.js';
+import { hasDuplicateItem, getNestedArrayFromString, getOrderSum } from './utilities.js';
 
 const Validate = {
   date(input) {
@@ -16,19 +16,23 @@ const Validate = {
   },
 
   menuOrder(input) {
-    const items = input.split(',');
-    let totalCount = 0;
+    const menuOrder = getNestedArrayFromString(input);
+
+    if (hasDuplicateItem(menuOrder)) {
+      throw new Error(ERRORS.duplicateItem);
+    }
+
+    const totalCount = getOrderSum(menuOrder);
     const categories = [];
-    items.forEach((item) => {
-      const [name, count] = item.split('-');
+
+    menuOrder.forEach(([name, count]) => {
       if (!RESTAURANT_MENU[name]) {
         throw new Error(ERRORS.invalidItemOrder);
       }
       if (totalCount > ORDER_LIMIT) {
-        throw new Error(ERRORS.invalidItemOrder);
+        throw new Error(ERRORS.invalidItemCount);
       }
       categories.push(RESTAURANT_MENU[name].category);
-      totalCount += Number(count);
     });
     if (categories.includes('drink') && categories.length === 1) {
       throw new Error(ERRORS.invalidItemCategories);
