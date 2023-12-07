@@ -28,7 +28,7 @@ const Validate = {
         throw new Error(ERRORS.invalidItemOrder);
       }
       categories.push(RESTAURANT_MENU[name].category);
-      totalCount += count;
+      totalCount += Number(count);
     });
     if (categories.includes('drink') && categories.length === 1) {
       throw new Error(ERRORS.invalidItemCategories);

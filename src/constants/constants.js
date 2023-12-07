@@ -1,10 +1,14 @@
 export const ORDER_LIMIT = 20;
 export const MINIMUM_ORDER_FOR_DISCOUNTS = 10000;
-export const MINIMUM_ORDER_FOR_FREEBIE = 120000;
+
+export const CURRENT_YEAR = 2023;
+export const CURRENT_MONTH = 11;
+export const CHRISTMAS_DATE = 25;
+export const BASE_DISCOUNT = 0;
 
 export const REGEX = {
   date: /^([1-9]|[12]\d|3[01])$/,
-  menuOrder: /^.*-\d{1,2}$/,
+  menuOrder: /^.*-\d{1,2}$/g,
 };
 
 export const RESTAURANT_MENU = {
@@ -61,9 +65,13 @@ export const RESTAURANT_MENU = {
 export const PROMOTIONS = {
   weekdays: {
     discounts: 2023,
+    item: 'dessert',
+    days: ['Sunday', 'Monday', 'Tuesday',' Wednesday', 'Thursday'],
   },
   weekends: {
     discounts: 2023,
+    item: 'main',
+    days: ['Friday', 'Saturday'],
   },
   dDay: {
     discounts: {
@@ -73,8 +81,20 @@ export const PROMOTIONS = {
   },
   specialDay: {
     discounts: 1000,
+    days: ['Sunday'],
   },
   freebie: {
     discounts: 25000,
+    requirement: 120000,
   },
 };
+
+export const DAY_STRINGS = {
+  0: 'Sunday',
+  1: 'Monday',
+  2: 'Tuesday',
+  3: 'Wednesday',
+  4: 'Thursday',
+  5: 'Friday',
+  6: 'Saturday',
+}

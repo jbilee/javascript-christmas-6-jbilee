@@ -15,6 +15,10 @@ class PlannerHandler {
     const menuOrder = await this.getMenuOrder();
     this.#menuOrder = new MenuOrder(menuOrder);
 
+    const test = this.#promotions.getTotalDiscounts(menuOrder);
+
+    console.log(test)
+
     // get results
     // print results
   }
@@ -45,7 +49,7 @@ class PlannerHandler {
         menuOrder = null;
       }
     } while (!menuOrder);
-    return menuOrder;
+    return menuOrder.split(',').map((item) => item.split('-'));
   }
 }
 
